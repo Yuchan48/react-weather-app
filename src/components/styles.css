@@ -1,67 +1,87 @@
-@import url('https://fonts.googleapis.com/css2?family=Recursive&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Recursive&display=swap");
 
+.tab {
+  margin: 10px;
+}
 .main {
-    max-width: 600px;
-    width: 90%;
-    border-radius: 15px;
-    background-color: #08395f;
+  margin: 0;
+  background-color: #08395f;
+  border-radius: 20px;
+  height: 100%;
+  width: 100%;
 }
 
-.top{
-    height: 60px;
-    background-color: #424242;
-    color: whitesmoke; 
-    padding: 10px;
-    border-radius: 15px 15px 0 0;
-    font-family: 'Recursive', sans-serif;
-    display: flex;
-    justify-content: space-between;
-}
-
-.header {    
-    color: whitesmoke;
-    font-size: 25px;
-    margin: 10px 0px 0px 10px;
-    font-family: 'Recursive', sans-serif;
-    height: 100%;
-}
-
-.button{
-    width: 35px;
-    height: 35px;
+.top {
+  height: 60px;
+  background-color: #424242;
+  color: whitesmoke;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+  padding: 10px;
+  font-family: "Recursive", sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .flex {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
-.day{
-    padding: 15px;
-    color: whitesmoke;
-    font-family: 'Recursive', sans-serif;
-    font-size: calc(15px + 1vw);
-    font-weight: 600;
+.header {
+  color: whitesmoke;
+  font-size: calc(12px + 1.2vw);
+  margin: 15px 0px 0px 10px;
+  font-family: "Recursive", sans-serif;
+  height: 100%;
 }
 
-.temp{
-    padding: 15px;
-    color: whitesmoke;
-    font-family: 'Recursive', sans-serif;
-    font-size: calc(10px + 1.1vw);
+.day {
+  padding: 15px;
+  color: whitesmoke;
+  font-family: "Recursive", sans-serif;
+  font-size: calc(14px + 1vw);
+  font-weight: 600;
 }
 
-.sunrise-sunset{
-    padding: 15px;
-    color: whitesmoke;
-    font-family: 'Recursive', sans-serif;
-    font-size: calc(10px + 0.9vw);
+.description {
+  padding: 15px;
+  color: whitesmoke;
+  font-family: "Recursive", sans-serif;
+  font-size: calc(12px + 1vw);
+  font-weight: 600;
 }
 
-.description{
-    padding: 15px;
-    color: whitesmoke;
-    font-family: 'Recursive', sans-serif;
-    font-size: 24px;
-    font-weight: 600;
+.button {
+  width: 35px;
+  height: 35px;
+}
+
+.weatherIcon {
+  width: 5rem;
+  height: 5rem;
+}
+
+.temp {
+  padding: 15px;
+  color: whitesmoke;
+  font-family: "Recursive", sans-serif;
+  font-size: calc(10px + 1.1vw);
+}
+
+.sunrise-sunset {
+  padding: 15px;
+  color: whitesmoke;
+  font-family: "Recursive", sans-serif;
+  font-size: calc(10px + 0.9vw);
+}
+
+/* second third Panel*/
+
+.hourly-icon {
+  width: 3.5rem;
+  height: auto;
+  background-color: blue;
+  border-radius: 50%;
 }
