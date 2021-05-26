@@ -11,18 +11,25 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        if (
-          position.coords.latitude === "undefined" ||
-          position.coords.longitude === "undefined"
-        ) {
-          setLat(52.522);
-          setLong(13.4133);
-        } else {
-          setLat(position.coords.latitude);
-          setLong(position.coords.longitude);
+      //get the current location. If the location setting is off it default to Berlin
+      const detectLocation = new Promise(async (resolve, reject) => {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              setLat(position.coords.latitude);
+              setLong(position.coords.longitude);
+            },
+            (error) => {
+              if (error.code === error.PERMISSION_DENIED) {
+                console.error("Error detecting location.");
+                setLat(52.5);
+                setLong(13.4);
+              }
+            }
+          );
         }
       });
+
       getWeatherTest(lat, long);
       getHourWeather(lat, long);
     };
