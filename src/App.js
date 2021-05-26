@@ -58,7 +58,7 @@ function App() {
 
   return (
     <div className="App">
-      {(typeof data.main != "undefined") & (typeof allData != "undefined") ? (
+      {(data.main && allData) ? (
         <div>
           <TabSecondary
             className="tabs"
