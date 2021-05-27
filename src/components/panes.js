@@ -6,7 +6,10 @@ import FirstPanel from "./firstPanel";
 import SecondPanel from "./secondPanel";
 import ThirdPanel from "./thirdPanel";
 
+
+
 const TabSecondary = ({ weatherData, weatherAllData }) => {
+
   const panes = [
     {
       menuItem: "current weather",
