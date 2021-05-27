@@ -8,26 +8,14 @@ function App() {
   const [long, setLong] = useState([]);
   const [data, setData] = useState([]);
   const [allData, setAllData] = useState([]);
-  const [test, setTest] = useState([]);
- 
-  useEffect(() => {
 
-    const fetchData = () => {
+  useEffect(() => {
+    const fetchData = async () => {
       //get the current location. If the location setting is off it default to Berlin
-     /*
-      getLocation = async () => {
+      const detectLocation = new Promise(async (resolve, reject) => {
         if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(
-            async (position) => {
-              setLat(position.coords.latitude);
-              setLong(position.coords.longitude);
-            })
-      }*/
-      
-      new Promise(async(resolve, reject) => {
-        if ("geolocation" in navigator) {
-          navigator.geolocation.getCurrentPosition(
-            async (position) => {
+            (position) => {
               setLat(position.coords.latitude);
               setLong(position.coords.longitude);
             },
@@ -39,8 +27,6 @@ function App() {
               }
             }
           );
-        } else {
-          console.log("no geolocation")
         }
       });
 
@@ -50,45 +36,42 @@ function App() {
     fetchData();
   }, [lat, long]);
 
-  
   const getWeatherTest = async (lat, long) => {
-
-    const url1 = `https://api.openweathermap.org/data/2.5/weather/?lat=${lat}&lon=${long}&units=metric&APPID=${process.env.REACT_APP_API_KEY}`;
-    await fetch(url1)
+    await fetch(
+      `https://api.openweathermap.org/data/2.5/weather/?lat=${lat}&lon=${long}&units=metric&APPID=${process.env.REACT_APP_API_KEY}`
+    )
       .then((res) => res.json())
       .then((result) => {
         setData(result);
         //console.log(result);
-      })
+      });
   };
   const getHourWeather = async (lat, long) => {
-    const url2 = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=current,minutely,alerts&units=metric&appid=${process.env.REACT_APP_API_KEY_2}`;
-    await fetch(url2)
+    await fetch(
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=current,minutely,alerts&units=metric&appid=${process.env.REACT_APP_API_KEY}`
+    )
       .then((res) => res.json())
       .then((result) => {
         setAllData(result);
-      })
+      });
   };
-
-  
 
   return (
     <div className="App">
-      {(data.main && allData) ? (
+      {(typeof data.main != "undefined") & (typeof allData != "undefined") ? (
         <div>
           <TabSecondary
             className="tabs"
             weatherData={data}
             weatherAllData={allData}
-            
           />
         </div>
       ) : (
-        <>
+        <div>
           <Dimmer active>
             <Loader>Loading..</Loader>
           </Dimmer>
-        </>
+        </div>
       )}
     </div>
   );
