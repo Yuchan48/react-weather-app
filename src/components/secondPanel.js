@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "semantic-ui-react";
 
-export default function secondPanel({ weatherData, weatherAllData }) {
+export default function secondPanel({ cityName, weatherInfo }) {
   const getHour = (hour) => new Date(hour).getHours();
   const hourlyInfo = (item, i) => {
     const imageSrc = `http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
@@ -21,12 +21,12 @@ export default function secondPanel({ weatherData, weatherAllData }) {
     <Table celled striped>
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell colSpan="4">{weatherData.name}</Table.HeaderCell>
+          <Table.HeaderCell colSpan="4">{cityName}</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
 
       <Table.Body>
-        {weatherAllData.hourly.slice(0, 24).map((item, i) => {
+        {weatherInfo.hourly.slice(0, 24).map((item, i) => {
           return hourlyInfo(item, i);
         })}
       </Table.Body>

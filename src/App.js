@@ -1,69 +1,99 @@
-import "./App.css";
+import axios from "axios";
+import axiosRetry from "axios-retry";
 import React, { useState, useEffect } from "react";
+import "./App.css";
 import { Dimmer, Loader } from "semantic-ui-react";
 import TabSecondary from "./components/panes";
+
+axiosRetry(axios, { retryDelay: axiosRetry.exponentialDelay });
 
 function App() {
   const [lat, setLat] = useState([]);
   const [long, setLong] = useState([]);
-  const [data, setData] = useState([]);
-  const [allData, setAllData] = useState([]);
+  const [cityName, setCityName] = useState([]);
+  const [weatherInfo, setWeatherInfo] = useState([]);
+  const [locationError, setLocationError] = useState(false);
+
+  const fetchIPAddress = async () => {
+    try {
+      const data = await axios.get("https://ipapi.co/json");
+      if (data) {
+        const { latitude, longitude, city } = data.data;
+        setLat(latitude);
+        setLong(longitude);
+        setCityName(city);
+      } else {
+        setLat(52.5);
+        setLong(13.4);
+        setCityName("Berlin");
+        setLocationError(true);
+      }
+    } catch (error) {
+      console.error("error fetching IP Address");
+      setLat(52.5);
+        setLong(13.4);
+        setCityName("Berlin");
+        setLocationError(true);
+    }
+  };
+
+  const getCityName = async (lat, long) => {
+    const cityDataUrl = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${long}&localityLanguage=en`;
+    try {
+      const locationData = await axios.get(cityDataUrl);
+      setCityName(locationData.data.city);
+    } catch (error) {
+      console.log("city data not available: ", error);
+      setCityName("undefined");
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      //get the current location. If the location setting is off it default to Berlin
-      const detectLocation = new Promise(async (resolve, reject) => {
-        if ("geolocation" in navigator) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              setLat(position.coords.latitude);
-              setLong(position.coords.longitude);
-            },
-            (error) => {
-              if (error.code === error.PERMISSION_DENIED) {
-                console.error("Error detecting location.");
-                setLat(52.5);
-                setLong(13.4);
-              }
-            }
-          );
-        }
-      });
-
-      getWeatherTest(lat, long);
-      getHourWeather(lat, long);
+    const getAddress = async () => {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            setLat(position.coords.latitude);
+            setLong(position.coords.longitude);
+            getCityName(lat, long);
+          },
+          (error) => {
+            fetchIPAddress();
+          }
+        );
+      } else {
+        console.log("geolocation not available");
+        fetchIPAddress();
+      }
+      fetchWeatherData(lat, long);
     };
-    fetchData();
+    getAddress();
   }, [lat, long]);
 
-  const getWeatherTest = async (lat, long) => {
-    await fetch(
-      `https://api.openweathermap.org/data/2.5/weather/?lat=${lat}&lon=${long}&units=metric&APPID=${process.env.REACT_APP_API_KEY}`
-    )
-      .then((res) => res.json())
-      .then((result) => {
-        setData(result);
-        //console.log(result);
-      });
+  //console.log("weatherinfo", weatherInfo);
+  const fetchWeatherData = async (lat, long) => {
+    const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely,alerts&units=metric&appid=${process.env.REACT_APP_API_KEY}`;
+    if (typeof lat === "number" && typeof long === "number") {
+      try {
+        const weatherData = await axios.get(weatherURL);
+        setWeatherInfo(weatherData.data);
+      } catch (error) {
+        console.log("fail to fetch weather data:", error);
+      }
+    } else {
+      console.log("location unavailable");
+    }
   };
-  const getHourWeather = async (lat, long) => {
-    await fetch(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=current,minutely,alerts&units=metric&appid=${process.env.REACT_APP_API_KEY}`
-    )
-      .then((res) => res.json())
-      .then((result) => {
-        setAllData(result);
-      });
-  };
-
+ 
+  
   return (
-    <div className="App">
-      {(typeof data.main != "undefined") & (typeof allData != "undefined") ? (
+  <div className="App">
+     {(typeof weatherInfo.current !== "undefined") ? (
         <div>
           <TabSecondary
             className="tabs"
-            weatherData={data}
-            weatherAllData={allData}
+            weatherInfo={weatherInfo}
+            cityName={cityName}
           />
         </div>
       ) : (
@@ -73,8 +103,7 @@ function App() {
           </Dimmer>
         </div>
       )}
-    </div>
-  );
+  </div>);
 }
 
 export default App;

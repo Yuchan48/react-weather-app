@@ -3,7 +3,7 @@ import "./styles.css";
 
 import { Table } from "semantic-ui-react";
 
-export default function thirdPanel({ weatherData, weatherAllData }) {
+export default function thirdPanel({ cityName, weatherInfo }) {
   const getDate = (date) => {
     return new Date(date).toDateString();
   };
@@ -31,12 +31,12 @@ export default function thirdPanel({ weatherData, weatherAllData }) {
     <Table celled striped>
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell colSpan="5">{weatherData.name}</Table.HeaderCell>
+          <Table.HeaderCell colSpan="5">{cityName}</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
 
       <Table.Body>
-        {weatherAllData.daily.map((item, i) => {
+        {weatherInfo.daily.map((item, i) => {
           return dailyInfo(item, i);
         })}
       </Table.Body>

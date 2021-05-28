@@ -1,5 +1,5 @@
-import React from "react";
-import { Tab } from "semantic-ui-react";
+import React, {useRef} from "react";
+import { Tab, Ref } from "semantic-ui-react";
 import "./styles.css";
 
 import FirstPanel from "./firstPanel";
@@ -8,13 +8,16 @@ import ThirdPanel from "./thirdPanel";
 
 
 
-const TabSecondary = ({ weatherData, weatherAllData }) => {
+const TabSecondary = ({ weatherInfo, cityName }) => {
+   
 
   const panes = [
     {
-      menuItem: "current weather",
+      menuItem: "currentWeather",
       render: () => {
         return (
+
+            
           <Tab.Pane
             style={{
               background: "#baf0f7",
@@ -23,9 +26,11 @@ const TabSecondary = ({ weatherData, weatherAllData }) => {
               padding: 0,
             }}
             attached={false}
+           
           >
-            <FirstPanel weatherData={weatherData} />
+            <FirstPanel weatherInfo={weatherInfo} cityName={cityName} />
           </Tab.Pane>
+          
         );
       },
     },
@@ -37,22 +42,23 @@ const TabSecondary = ({ weatherData, weatherAllData }) => {
           attached={false}
         >
           <SecondPanel
-            weatherAllData={weatherAllData}
-            weatherData={weatherData}
+            weatherInfo={weatherInfo}
+            cityName={cityName}
           />
         </Tab.Pane>
       ),
     },
     {
-      menuItem: "14days",
+      menuItem: "7days",
+      
       render: () => (
         <Tab.Pane
           style={{ background: "#baf0f7", padding: 0 }}
           attached={false}
         >
           <ThirdPanel
-            weatherAllData={weatherAllData}
-            weatherData={weatherData}
+            weatherInfo={weatherInfo}
+            cityName={cityName}
           />
         </Tab.Pane>
       ),
@@ -64,6 +70,7 @@ const TabSecondary = ({ weatherData, weatherAllData }) => {
       className="tab"
       menu={{ secondary: true, pointing: true }}
       panes={panes}
+      
     />
   );
 };
