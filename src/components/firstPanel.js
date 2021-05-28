@@ -7,7 +7,7 @@ const refresh = () => {
 };
 
 export default function firstPanel({ weatherInfo, cityName }) {
-  const imageSrc = `http://openweathermap.org/img/wn/${weatherInfo.current.weather[0].icon}@2x.png`;
+  const imageSrc = `https://openweathermap.org/img/wn/${weatherInfo.current.weather[0].icon}@2x.png`;
   
   
   return (

@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Recursive&display=swap");
 
+
 .tab {
   margin: 10px;
 }
@@ -12,7 +13,7 @@
 }
 
 .top {
-  height: 60px;
+  min-height: calc(40px + 1.2vw);
   background-color: #424242;
   color: whitesmoke;
   border-top-right-radius: 20px;
@@ -31,10 +32,11 @@
 
 .header {
   color: whitesmoke;
-  font-size: calc(12px + 1.2vw);
+  font-size: calc(20px + 1.1vw);
   margin: 15px 0px 0px 10px;
   font-family: "Recursive", sans-serif;
   height: 100%;
+  
 }
 
 .day {

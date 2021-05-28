@@ -31,9 +31,9 @@ function App() {
     } catch (error) {
       console.error("error fetching IP Address");
       setLat(52.5);
-        setLong(13.4);
-        setCityName("Berlin");
-        setLocationError(true);
+      setLong(13.4);
+      setCityName("Berlin");
+      setLocationError(true);
     }
   };
 
@@ -84,16 +84,16 @@ function App() {
       console.log("location unavailable");
     }
   };
- 
-  
+
   return (
-  <div className="App">
-     {(typeof weatherInfo.current !== "undefined") ? (
+    <div className="App">
+      {typeof weatherInfo.current !== "undefined" ? (
         <div>
           <TabSecondary
             className="tabs"
             weatherInfo={weatherInfo}
             cityName={cityName}
+            locationError={locationError}
           />
         </div>
       ) : (
@@ -103,7 +103,8 @@ function App() {
           </Dimmer>
         </div>
       )}
-  </div>);
+    </div>
+  );
 }
 
 export default App;

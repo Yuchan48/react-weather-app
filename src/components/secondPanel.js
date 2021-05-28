@@ -4,7 +4,7 @@ import { Table } from "semantic-ui-react";
 export default function secondPanel({ cityName, weatherInfo }) {
   const getHour = (hour) => new Date(hour).getHours();
   const hourlyInfo = (item, i) => {
-    const imageSrc = `http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
+    const imageSrc = `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
     return (
       <Table.Row key={i}>
         <Table.Cell collapsing>{`${getHour(item.dt * 1000)}:00`}</Table.Cell>

@@ -9,7 +9,7 @@ export default function thirdPanel({ cityName, weatherInfo }) {
   };
 
   const dailyInfo = (item, i) => {
-    const imageSrc = `http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
+    const imageSrc = `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
     return (
       <Table.Row key={i}>
         <Table.Cell collapsing>{`${getDate(item.dt * 1000)}`}</Table.Cell>
