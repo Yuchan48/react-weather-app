@@ -1,7 +1,7 @@
 # Weather App
 weather app created with React.js.
 
-preview: https://weather-app-yuchan.herokuapp.com/
+preview: https://yuchan-weather-app.netlify.app/
 
 ___
 
