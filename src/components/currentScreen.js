@@ -7,13 +7,17 @@ function currentScreen({ weatherInfo, cityName }) {
   return (
     <div className="current_container">
       <p className="city_name">{cityName}</p>
-      
+
       <div className="current_row">
         <img className="current_icon" src={imageSrc} alt="weather icon"></img>
-        <p className="current_temp">{Math.round(weatherInfo.current.temp)} &deg;C</p>
+        <p className="current_temp">
+          {Math.round(weatherInfo.current.temp)} &deg;C
+        </p>
       </div>
- 
-      <p className="current_desc">{weatherInfo.current.weather[0].description}</p>
+
+      <p className="current_desc">
+        {weatherInfo.current.weather[0].description}
+      </p>
       <p className="current_time">
         {moment().format("dddd")}, <span>{moment().format("LL")}</span>
       </p>

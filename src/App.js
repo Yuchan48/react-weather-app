@@ -4,25 +4,25 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Dimmer, Loader } from "semantic-ui-react";
 
-import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 //screen
 import MainScreen from "./components/mainScreen";
 
 //image
-import clearSky from './image/clear.jpg';
-import clearNight from './image/clear-night.jpg'
-import clouds from './image/clouds.jpg';
-import cloudsNight from './image/clouds-night.jpg';
-import mist from './image/mist.jpg';
-import mistNight from './image/mist-night.jpg';
-import rain from './image/rain-day.jpg';
-import rainNight from './image/rain-night.jpg';
-import snow from './image/snow.jpg';
-import snowNight from './image/snow-night.jpg';
-import thunder from './image/thunder-day.jpg';
-import thunderNight from './image/thunder.jpg';
+import clearSky from "./image/clear.jpg";
+import clearNight from "./image/clear-night.jpg";
+import clouds from "./image/clouds.jpg";
+import cloudsNight from "./image/clouds-night.jpg";
+import mist from "./image/mist.jpg";
+import mistNight from "./image/mist-night.jpg";
+import rain from "./image/rain-day.jpg";
+import rainNight from "./image/rain-night.jpg";
+import snow from "./image/snow.jpg";
+import snowNight from "./image/snow-night.jpg";
+import thunder from "./image/thunder-day.jpg";
+import thunderNight from "./image/thunder.jpg";
 
 axiosRetry(axios, { retryDelay: axiosRetry.exponentialDelay });
 
@@ -88,9 +88,9 @@ function App() {
       fetchWeatherData(lat, long);
     };
     getAddress();
-  }, [lat,long]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lat, long]);
 
-  //console.log("weatherinfo", weatherInfo);
   const fetchWeatherData = async (lat, long) => {
     const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely,alerts&units=metric&appid=${process.env.REACT_APP_API_KEY}`;
     if (typeof lat === "number" && typeof long === "number") {
@@ -108,14 +108,14 @@ function App() {
 
   const backGroundImage = (weatherData) => {
     const mainWeather = weatherData.data.current.weather[0].main;
-  
-     switch (mainWeather){
+
+    switch (mainWeather) {
       case "02d" || "03d" || "04d":
         setBackImg(clouds);
-      break;
+        break;
       case "02n" || "03n" || "04n":
         setBackImg(cloudsNight);
-      break;
+        break;
       case "09d" || "10d":
         setBackImg(rain);
         break;
@@ -146,11 +146,10 @@ function App() {
       default:
         setBackImg(clearSky);
     }
-
-  }
+  };
 
   return (
-    <div className="App" style={{backgroundImage: `url(${backImg})`}}>
+    <div className="App" style={{ backgroundImage: `url(${backImg})` }}>
       {typeof weatherInfo.current !== "undefined" ? (
         <div>
           <MainScreen

@@ -11,48 +11,56 @@ function DailyScreen({ weatherInfo }) {
     arrows: false,
     slidesToShow: 7,
     responsive: [
-        {
-          breakpoint: 1400,
-          settings: {
-            arrows: true,
-            slidesToShow: 5,
-            slidesToScroll: 3
-          }
+      {
+        breakpoint: 1400,
+        settings: {
+          arrows: true,
+          slidesToShow: 5,
+          slidesToScroll: 3,
         },
-        {
-            breakpoint: 1100,
-            settings: {
-              arrows: true,
-              slidesToShow: 4,
-              slidesToScroll: 3
-            }
-          },
-        {
-          breakpoint: 480,
-          settings: {
-            slidesToShow: 3,
-            slidesToScroll: 2
-          }
-        }
-      ]
+      },
+      {
+        breakpoint: 1100,
+        settings: {
+          arrows: true,
+          slidesToShow: 4,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 2,
+        },
+      },
+    ],
   };
 
   const getDate = (date) => {
-    let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    let days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
     let d = new Date(date);
     return days[d.getDay()];
   };
 
-  const dailyInfo = (item) => {
+  const dailyInfo = (item, i) => {
     const imageSrc = `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
     return (
-      <div className="daily_items">
+      <div className="daily_items" key={i}>
         <h4>{`${getDate(item.dt * 1000)}`}</h4>
         <div className="daily_row">
           <img src={imageSrc} alt="weather icon" />
           <div>
-              <p>max &nbsp;{`${Math.round(item.temp.max)}`}&deg;C</p>
-              <p>min &nbsp; {`${Math.round(item.temp.min)}`}&deg;C</p>
+            <p>max &nbsp;{`${Math.round(item.temp.max)}`}&deg;C</p>
+            <p>min &nbsp; {`${Math.round(item.temp.min)}`}&deg;C</p>
           </div>
         </div>
       </div>
@@ -63,8 +71,8 @@ function DailyScreen({ weatherInfo }) {
     <div className="daily_screen">
       <h3>Daily Forecast</h3>
       <Slider {...settings}>
-      {weatherInfo.daily.map((item) => {
-          return dailyInfo(item);
+        {weatherInfo.daily.map((item, i) => {
+          return dailyInfo(item, i);
         })}
       </Slider>
     </div>
