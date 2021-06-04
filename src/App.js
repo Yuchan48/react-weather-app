@@ -3,7 +3,26 @@ import axiosRetry from "axios-retry";
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Dimmer, Loader } from "semantic-ui-react";
-import TabSecondary from "./components/panes";
+
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+
+//screen
+import MainScreen from "./components/mainScreen";
+
+//image
+import clearSky from './image/clear.jpg';
+import clearNight from './image/clear-night.jpg'
+import clouds from './image/clouds.jpg';
+import cloudsNight from './image/clouds-night.jpg';
+import mist from './image/mist.jpg';
+import mistNight from './image/mist-night.jpg';
+import rain from './image/rain-day.jpg';
+import rainNight from './image/rain-night.jpg';
+import snow from './image/snow.jpg';
+import snowNight from './image/snow-night.jpg';
+import thunder from './image/thunder-day.jpg';
+import thunderNight from './image/thunder.jpg';
 
 axiosRetry(axios, { retryDelay: axiosRetry.exponentialDelay });
 
@@ -13,6 +32,7 @@ function App() {
   const [cityName, setCityName] = useState([]);
   const [weatherInfo, setWeatherInfo] = useState([]);
   const [locationError, setLocationError] = useState(false);
+  const [backImg, setBackImg] = useState([]);
 
   const fetchIPAddress = async () => {
     try {
@@ -68,7 +88,7 @@ function App() {
       fetchWeatherData(lat, long);
     };
     getAddress();
-  }, [lat, long]);
+  }, [lat,long]);
 
   //console.log("weatherinfo", weatherInfo);
   const fetchWeatherData = async (lat, long) => {
@@ -77,6 +97,7 @@ function App() {
       try {
         const weatherData = await axios.get(weatherURL);
         setWeatherInfo(weatherData.data);
+        backGroundImage(weatherData);
       } catch (error) {
         console.log("fail to fetch weather data:", error);
       }
@@ -85,11 +106,54 @@ function App() {
     }
   };
 
+  const backGroundImage = (weatherData) => {
+    const mainWeather = weatherData.data.current.weather[0].main;
+  
+     switch (mainWeather){
+      case "02d" || "03d" || "04d":
+        setBackImg(clouds);
+      break;
+      case "02n" || "03n" || "04n":
+        setBackImg(cloudsNight);
+      break;
+      case "09d" || "10d":
+        setBackImg(rain);
+        break;
+      case "09n" || "10n":
+        setBackImg(rainNight);
+        break;
+      case "50d":
+        setBackImg(mist);
+        break;
+      case "50n":
+        setBackImg(mistNight);
+        break;
+      case "13d":
+        setBackImg(snow);
+        break;
+      case "13n":
+        setBackImg(snowNight);
+        break;
+      case "11d":
+        setBackImg(thunder);
+        break;
+      case "11n":
+        setBackImg(thunderNight);
+        break;
+      case "01n":
+        setBackImg(clearNight);
+        break;
+      default:
+        setBackImg(clearSky);
+    }
+
+  }
+
   return (
-    <div className="App">
+    <div className="App" style={{backgroundImage: `url(${backImg})`}}>
       {typeof weatherInfo.current !== "undefined" ? (
         <div>
-          <TabSecondary
+          <MainScreen
             className="tabs"
             weatherInfo={weatherInfo}
             cityName={cityName}
