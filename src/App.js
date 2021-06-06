@@ -107,7 +107,7 @@ function App() {
   };
 
   const backGroundImage = (weatherData) => {
-    const mainWeather = weatherData.data.current.weather[0].main;
+    const mainWeather = weatherData.data.current.weather[0].icon;
 
     switch (mainWeather) {
       case "02d" || "03d" || "04d":
