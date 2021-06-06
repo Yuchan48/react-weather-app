@@ -12,7 +12,7 @@ import MainScreen from "./components/mainScreen";
 
 //image
 import clearSky from "./image/clear.jpg";
-import clearNight from "./image/clear-night.jpg";
+import clearNight from "./image/clear-night-new.jpg";
 import clouds from "./image/clouds.jpg";
 import cloudsNight from "./image/clouds-night.jpg";
 import mist from "./image/mist.jpg";
@@ -107,7 +107,7 @@ function App() {
   };
 
   const backGroundImage = (weatherData) => {
-    const mainWeather = weatherData.data.current.weather[0].main;
+    const mainWeather = weatherData.data.current.weather[0].icon;
 
     switch (mainWeather) {
       case "02d" || "03d" || "04d":
