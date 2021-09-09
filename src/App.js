@@ -3,33 +3,19 @@ import axiosRetry from "axios-retry";
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Dimmer, Loader } from "semantic-ui-react";
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 //screen
 import MainScreen from "./components/mainScreen";
 
-//image
-import clearSky from "./image/clear.jpg";
-import clearNight from "./image/clear-night-new.jpg";
-import clouds from "./image/clouds.jpg";
-import cloudsNight from "./image/clouds-night.jpg";
-import mist from "./image/mist.jpg";
-import mistNight from "./image/mist-night.jpg";
-import rain from "./image/rain-day.jpg";
-import rainNight from "./image/rain-night.jpg";
-import snow from "./image/snow.jpg";
-import snowNight from "./image/snow-night.jpg";
-import thunder from "./image/thunder-day.jpg";
-import thunderNight from "./image/thunder.jpg";
+import{ clearSky, clearNight, clouds, cloudsNight, mist, mistNight, rain, rainNight, snow, snowNight, thunder, thunderNight,} from "./image/images"
 
 axiosRetry(axios, { retryDelay: axiosRetry.exponentialDelay });
 
 function App() {
-  const [lat, setLat] = useState([]);
-  const [long, setLong] = useState([]);
-  const [cityName, setCityName] = useState([]);
+  const [locationInfo, setLocationInfo] = useState({ lat: 0, long: 0, cityName: "",});
+  const { lat, long, cityName } = locationInfo;
   const [weatherInfo, setWeatherInfo] = useState([]);
   const [locationError, setLocationError] = useState(false);
   const [backImg, setBackImg] = useState([]);
@@ -37,22 +23,11 @@ function App() {
   const fetchIPAddress = async () => {
     try {
       const data = await axios.get("https://ipapi.co/json");
-      if (data) {
-        const { latitude, longitude, city } = data.data;
-        setLat(latitude);
-        setLong(longitude);
-        setCityName(city);
-      } else {
-        setLat(52.5);
-        setLong(13.4);
-        setCityName("Berlin");
-        setLocationError(true);
-      }
+      const { latitude, longitude, city } = data.data;
+      setLocationInfo({ lat: latitude, long: longitude, cityName: city });
     } catch (error) {
       console.error("error fetching IP Address");
-      setLat(52.5);
-      setLong(13.4);
-      setCityName("Berlin");
+      setLocationInfo({ lat: 52.5, long: 13.4, cityName: "Berlin" });
       setLocationError(true);
     }
   };
@@ -61,10 +36,13 @@ function App() {
     const cityDataUrl = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${long}&localityLanguage=en`;
     try {
       const locationData = await axios.get(cityDataUrl);
-      setCityName(locationData.data.city);
+      setLocationInfo({ ...locationInfo, cityName: locationData.data.city });
     } catch (error) {
       console.log("city data not available: ", error);
-      setCityName("undefined");
+      setLocationInfo({
+        ...locationInfo,
+        cityName: "undefined",
+      });
     }
   };
 
@@ -73,8 +51,11 @@ function App() {
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
-            setLat(position.coords.latitude);
-            setLong(position.coords.longitude);
+            setLocationInfo({
+              lat: position.coords.latitude,
+              long: position.coords.longitude,
+            });
+
             getCityName(lat, long);
           },
           (error) => {
@@ -108,44 +89,9 @@ function App() {
 
   const backGroundImage = (weatherData) => {
     const mainWeather = weatherData.data.current.weather[0].icon;
+    const bgObj = { "02d": clouds, "03d": clouds, "04d": clouds, "02n": clearNight, "03n": cloudsNight, "04n": cloudsNight, "09d": rain, "10d": rain, "09n": rainNight, "10n": rainNight, "50d": mist, "50n": mistNight, "13d": snow, "13n": snowNight, "11d": thunder, "11n": thunderNight, "01n": clearNight, "01d": clearSky,};
 
-    switch (mainWeather) {
-      case "02d" || "03d" || "04d":
-        setBackImg(clouds);
-        break;
-      case "02n" || "03n" || "04n":
-        setBackImg(cloudsNight);
-        break;
-      case "09d" || "10d":
-        setBackImg(rain);
-        break;
-      case "09n" || "10n":
-        setBackImg(rainNight);
-        break;
-      case "50d":
-        setBackImg(mist);
-        break;
-      case "50n":
-        setBackImg(mistNight);
-        break;
-      case "13d":
-        setBackImg(snow);
-        break;
-      case "13n":
-        setBackImg(snowNight);
-        break;
-      case "11d":
-        setBackImg(thunder);
-        break;
-      case "11n":
-        setBackImg(thunderNight);
-        break;
-      case "01n":
-        setBackImg(clearNight);
-        break;
-      default:
-        setBackImg(clearSky);
-    }
+    setBackImg(bgObj[mainWeather] || clearSky);
   };
 
   return (
