@@ -6,6 +6,8 @@ import { Dimmer, Loader } from "semantic-ui-react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+import {getCityName} from "./functions/getCityName"
+
 //screen
 import MainScreen from "./components/mainScreen";
 
@@ -32,20 +34,6 @@ function App() {
     }
   };
 
-  const getCityName = async (lat, long) => {
-    const cityDataUrl = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${long}&localityLanguage=en`;
-    try {
-      const locationData = await axios.get(cityDataUrl);
-      setLocationInfo({ ...locationInfo, cityName: locationData.data.city });
-    } catch (error) {
-      console.log("city data not available: ", error);
-      setLocationInfo({
-        ...locationInfo,
-        cityName: "undefined",
-      });
-    }
-  };
-
   useEffect(() => {
     const getAddress = async () => {
       if ("geolocation" in navigator) {
@@ -55,8 +43,8 @@ function App() {
               lat: position.coords.latitude,
               long: position.coords.longitude,
             });
-
-            getCityName(lat, long);
+            setLocationInfo(getCityName(lat, long, locationInfo))
+           
           },
           (error) => {
             fetchIPAddress();
