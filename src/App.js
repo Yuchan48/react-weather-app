@@ -6,12 +6,14 @@ import { Dimmer, Loader } from "semantic-ui-react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import {getCityName} from "./functions/getCityName"
+import { getCityName } from "./functions/getCityName";
 import { fetchIPAddress } from "./functions/fetchIPAddress";
+import { backGroundImage } from "./functions/bgImage";
+
 //screen
 import MainScreen from "./components/mainScreen";
 
-import{ clearSky, clearNight, clouds, cloudsNight, mist, mistNight, rain, rainNight, snow, snowNight, thunder, thunderNight,} from "./image/images"
+import { clearSky } from "./image/images";
 
 axiosRetry(axios, { retryDelay: axiosRetry.exponentialDelay });
 
@@ -19,23 +21,22 @@ function App() {
   const [locationInfo, setLocationInfo] = useState({ lat: 0, long: 0, cityName: "",});
   const { lat, long, cityName } = locationInfo;
   const [weatherInfo, setWeatherInfo] = useState([]);
-  const [backImg, setBackImg] = useState("");
+  const [backImg, setBackImg] = useState(clearSky);
 
   useEffect(() => {
-    const getAddress = async () => {
+    const getData = async () => {
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
             setLocationInfo({
               lat: position.coords.latitude,
               long: position.coords.longitude,
-              cityName: ""
+              cityName: "",
             });
-            setLocationInfo(getCityName(lat, long, locationInfo))
-           
+            setLocationInfo(getCityName(lat, long, locationInfo));
           },
           (error) => {
-            setLocationInfo(fetchIPAddress())
+            setLocationInfo(fetchIPAddress());
           }
         );
       } else {
@@ -44,7 +45,7 @@ function App() {
       }
       fetchWeatherData(lat, long);
     };
-    getAddress();
+    getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lat, long]);
 
@@ -54,20 +55,13 @@ function App() {
       try {
         const weatherData = await axios.get(weatherURL);
         setWeatherInfo(weatherData.data);
-        backGroundImage(weatherData);
+        setBackImg(backGroundImage(weatherData));
       } catch (error) {
         console.log("fail to fetch weather data:", error);
       }
     } else {
       console.log("location unavailable");
     }
-  };
-
-  const backGroundImage = (weatherData) => {
-    const mainWeather = weatherData.data.current.weather[0].icon;
-    const bgObj = { "02d": clouds, "03d": clouds, "04d": clouds, "02n": clearNight, "03n": cloudsNight, "04n": cloudsNight, "09d": rain, "10d": rain, "09n": rainNight, "10n": rainNight, "50d": mist, "50n": mistNight, "13d": snow, "13n": snowNight, "11d": thunder, "11n": thunderNight, "01n": clearNight, "01d": clearSky,};
-
-    setBackImg(bgObj[mainWeather] || clearSky);
   };
 
   return (
