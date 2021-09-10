@@ -7,7 +7,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import {getCityName} from "./functions/getCityName"
-
+import { fetchIPAddress } from "./functions/fetchIPAddress";
 //screen
 import MainScreen from "./components/mainScreen";
 
@@ -19,20 +19,7 @@ function App() {
   const [locationInfo, setLocationInfo] = useState({ lat: 0, long: 0, cityName: "",});
   const { lat, long, cityName } = locationInfo;
   const [weatherInfo, setWeatherInfo] = useState([]);
-  const [locationError, setLocationError] = useState(false);
-  const [backImg, setBackImg] = useState([]);
-
-  const fetchIPAddress = async () => {
-    try {
-      const data = await axios.get("https://ipapi.co/json");
-      const { latitude, longitude, city } = data.data;
-      setLocationInfo({ lat: latitude, long: longitude, cityName: city });
-    } catch (error) {
-      console.error("error fetching IP Address");
-      setLocationInfo({ lat: 52.5, long: 13.4, cityName: "Berlin" });
-      setLocationError(true);
-    }
-  };
+  const [backImg, setBackImg] = useState("");
 
   useEffect(() => {
     const getAddress = async () => {
@@ -42,17 +29,18 @@ function App() {
             setLocationInfo({
               lat: position.coords.latitude,
               long: position.coords.longitude,
+              cityName: ""
             });
             setLocationInfo(getCityName(lat, long, locationInfo))
            
           },
           (error) => {
-            fetchIPAddress();
+            setLocationInfo(fetchIPAddress())
           }
         );
       } else {
         console.log("geolocation not available");
-        fetchIPAddress();
+        setLocationInfo(fetchIPAddress());
       }
       fetchWeatherData(lat, long);
     };
@@ -90,7 +78,6 @@ function App() {
             className="tabs"
             weatherInfo={weatherInfo}
             cityName={cityName}
-            locationError={locationError}
           />
         </div>
       ) : (
