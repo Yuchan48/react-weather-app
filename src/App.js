@@ -18,7 +18,11 @@ import { clearSky } from "./image/images";
 axiosRetry(axios, { retryDelay: axiosRetry.exponentialDelay });
 
 function App() {
-  const [locationInfo, setLocationInfo] = useState({ lat: 0, long: 0, cityName: "",});
+  const [locationInfo, setLocationInfo] = useState({
+    lat: 0,
+    long: 0,
+    cityName: "",
+  });
   const { lat, long, cityName } = locationInfo;
   const [weatherInfo, setWeatherInfo] = useState([]);
   const [backImg, setBackImg] = useState(clearSky);
@@ -28,12 +32,9 @@ function App() {
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
-            setLocationInfo({
-              lat: position.coords.latitude,
-              long: position.coords.longitude,
-              cityName: "",
-            });
-            setLocationInfo(getCityName(lat, long, locationInfo));
+            setLocationInfo(
+              getCityName(position.coords.latitude, position.coords.longitude)
+            );
           },
           (error) => {
             setLocationInfo(fetchIPAddress());
