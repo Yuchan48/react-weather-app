@@ -11,7 +11,7 @@ import { fetchIPAddress } from "./functions/fetchIPAddress";
 import { backGroundImage } from "./functions/bgImage";
 
 //screen
-import MainScreen from "./components/mainScreen";
+import MainScreen from "./components/MainScreen";
 
 import { clearSky } from "./image/images";
 
@@ -30,16 +30,11 @@ function App() {
   useEffect(() => {
     const getData = async () => {
       if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            setLocationInfo(
-              getCityName(position.coords.latitude, position.coords.longitude)
-            );
-          },
-          (error) => {
-            setLocationInfo(fetchIPAddress());
-          }
-        );
+        navigator.geolocation.getCurrentPosition((position) => {
+          setLocationInfo(
+            getCityName(position.coords.latitude, position.coords.longitude)
+          );
+        });
       } else {
         console.log("geolocation not available");
         setLocationInfo(fetchIPAddress());
@@ -47,21 +42,16 @@ function App() {
       fetchWeatherData(lat, long);
     };
     getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lat, long]);
 
   const fetchWeatherData = async (lat, long) => {
     const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely,alerts&units=metric&appid=${process.env.REACT_APP_API_KEY}`;
-    if (typeof lat === "number" && typeof long === "number") {
-      try {
-        const weatherData = await axios.get(weatherURL);
-        setWeatherInfo(weatherData.data);
-        setBackImg(backGroundImage(weatherData));
-      } catch (error) {
-        console.log("fail to fetch weather data:", error);
-      }
-    } else {
-      console.log("location unavailable");
+    try {
+      const weatherData = await axios.get(weatherURL);
+      setWeatherInfo(weatherData.data);
+      setBackImg(backGroundImage(weatherData));
+    } catch (error) {
+      console.log("fail to fetch weather data:", error);
     }
   };
 
@@ -70,7 +60,6 @@ function App() {
       {typeof weatherInfo.current !== "undefined" ? (
         <div>
           <MainScreen
-            className="tabs"
             weatherInfo={weatherInfo}
             cityName={cityName}
           />

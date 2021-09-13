@@ -8,7 +8,6 @@ export const fetchIPAddress = async () => {
     return { lat: latitude, long: longitude, cityName: city };
   } catch (error) {
     console.error("error fetching IP Address");
-
     return { lat: 52.5, long: 13.4, cityName: "Berlin" };
   }
 };

@@ -1,20 +1,20 @@
 import React from "react";
 import "./styles.css";
-import CurrentScreen from "./currentScreen";
-import HourlyScreen from "./hourlyScreen";
-import DailyScreen from "./dailyScreen";
+import CurrentWeather from "./CurrentWeather";
+import HourlyWeather from "./HourlyWeather";
+import DailyWeather from "./DailyWeather";
 
 const MainScreen = ({ weatherInfo, cityName }) => {
   return (
     <div className="mainScreen">
-      <CurrentScreen weatherInfo={weatherInfo} cityName={cityName} />
+      <CurrentWeather weatherInfo={weatherInfo} cityName={cityName} />
 
       <div>
-        <HourlyScreen weatherInfo={weatherInfo} />
+        <HourlyWeather weatherInfo={weatherInfo} />
       </div>
 
       <div>
-        <DailyScreen weatherInfo={weatherInfo} />
+        <DailyWeather weatherInfo={weatherInfo} />
       </div>
     </div>
   );

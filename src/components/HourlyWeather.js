@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
-const HourlyScreen = ({ weatherInfo }) => {
+const HourlyWeather = ({ weatherInfo }) => {
   const settings = {
     dots: false,
     infinite: false,
@@ -60,4 +60,4 @@ const HourlyScreen = ({ weatherInfo }) => {
     </div>
   );
 };
-export default HourlyScreen;
+export default HourlyWeather;

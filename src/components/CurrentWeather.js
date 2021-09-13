@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 
-function currentScreen({ weatherInfo, cityName }) {
+function CurrentWeather({ weatherInfo, cityName }) {
   const imageSrc = `https://openweathermap.org/img/wn/${weatherInfo.current.weather[0].icon}@2x.png`;
 
   return (
@@ -25,4 +25,4 @@ function currentScreen({ weatherInfo, cityName }) {
   );
 }
 
-export default currentScreen;
+export default CurrentWeather;

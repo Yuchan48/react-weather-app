@@ -2,8 +2,9 @@ import React from "react";
 import Slider from "react-slick";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
+import moment from "moment";
 
-function DailyScreen({ weatherInfo }) {
+function DailyWeather({ weatherInfo }) {
   const settings = {
     dots: false,
     infinite: false,
@@ -37,25 +38,11 @@ function DailyScreen({ weatherInfo }) {
     ],
   };
 
-  const getDate = (date) => {
-    let days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    let d = new Date(date);
-    return days[d.getDay()];
-  };
-
   const dailyInfo = (item, i) => {
     const imageSrc = `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
     return (
       <div className="daily_items" key={i}>
-        <h4>{`${getDate(item.dt * 1000)}`}</h4>
+        <h4>{`${moment(item.dt * 1000).format("dddd")}`}</h4>
         <div className="daily_row">
           <img src={imageSrc} alt="weather icon" />
           <div>
@@ -79,4 +66,4 @@ function DailyScreen({ weatherInfo }) {
   );
 }
 
-export default DailyScreen;
+export default DailyWeather;
