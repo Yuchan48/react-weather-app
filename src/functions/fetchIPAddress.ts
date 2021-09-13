@@ -1,6 +1,7 @@
 import axios from "axios";
+import { LocationInfo } from "../App";
 
-export const fetchIPAddress = async () => {
+export const fetchIPAddress = async (): Promise<LocationInfo> => {
   try {
     const data = await axios.get("https://ipapi.co/json");
     const { latitude, longitude, city } = data.data;

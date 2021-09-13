@@ -17,34 +17,40 @@ import { clearSky } from "./image/images";
 
 axiosRetry(axios, { retryDelay: axiosRetry.exponentialDelay });
 
-function App() {
-  const [locationInfo, setLocationInfo] = useState({
+export interface LocationInfo {
+  lat?: number,
+  long?: number,
+  cityName?: string
+}
+
+const App: React.FC = () => {
+  const [locationInfo, setLocationInfo] = useState<LocationInfo>({
     lat: 0,
     long: 0,
     cityName: "",
   });
   const { lat, long, cityName } = locationInfo;
-  const [weatherInfo, setWeatherInfo] = useState([]);
+  const [weatherInfo, setWeatherInfo] = useState<any>([]);
   const [backImg, setBackImg] = useState(clearSky);
 
   useEffect(() => {
     const getData = async () => {
       if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition((position) => {
+        navigator.geolocation.getCurrentPosition(async position => {
           setLocationInfo(
-            getCityName(position.coords.latitude, position.coords.longitude)
+            await getCityName(position.coords.latitude, position.coords.longitude)
           );
         });
       } else {
         console.log("geolocation not available");
-        setLocationInfo(fetchIPAddress());
+        setLocationInfo(await fetchIPAddress());
       }
       fetchWeatherData(lat, long);
     };
     getData();
   }, [lat, long]);
 
-  const fetchWeatherData = async (lat, long) => {
+  const fetchWeatherData = async (lat: number | undefined, long: number | undefined): Promise<void> => {
     const weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely,alerts&units=metric&appid=${process.env.REACT_APP_API_KEY}`;
     try {
       const weatherData = await axios.get(weatherURL);

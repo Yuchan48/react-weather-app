@@ -13,9 +13,13 @@ import {
   thunderNight,
 } from "../image/images";
 
-export const backGroundImage = (weatherData) => {
+interface ImageObject {
+  [key: string]: any;
+}
+
+export const backGroundImage = (weatherData: any): string => {
   const mainWeather = weatherData.data.current.weather[0].icon;
-  const bgObj = {
+  const bgObj: ImageObject = {
     "02d": clouds,
     "03d": clouds,
     "04d": clouds,

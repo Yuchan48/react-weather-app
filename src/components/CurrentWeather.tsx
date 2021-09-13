@@ -1,7 +1,8 @@
 import React from "react";
 import moment from "moment";
+import { FetchedDataProps} from "./MainScreen"
 
-function CurrentWeather({ weatherInfo, cityName }) {
+const CurrentWeather = ({ weatherInfo, cityName }: FetchedDataProps) => {
   const imageSrc = `https://openweathermap.org/img/wn/${weatherInfo.current.weather[0].icon}@2x.png`;
 
   return (

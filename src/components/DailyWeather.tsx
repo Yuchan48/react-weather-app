@@ -4,7 +4,8 @@ import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
 import moment from "moment";
 
-function DailyWeather({ weatherInfo }) {
+
+const DailyWeather = ({ weatherInfo }: any) => {
   const settings = {
     dots: false,
     infinite: false,
@@ -38,7 +39,7 @@ function DailyWeather({ weatherInfo }) {
     ],
   };
 
-  const dailyInfo = (item, i) => {
+  const dailyInfo = (item: any, i: number) => {
     const imageSrc = `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
     return (
       <div className="daily_items" key={i}>
@@ -58,7 +59,7 @@ function DailyWeather({ weatherInfo }) {
     <div className="daily_screen">
       <h3>Daily Forecast</h3>
       <Slider {...settings}>
-        {weatherInfo.daily.map((item, i) => {
+        {weatherInfo.daily.map((item: any, i: number) => {
           return dailyInfo(item, i);
         })}
       </Slider>

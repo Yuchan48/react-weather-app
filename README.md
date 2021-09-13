@@ -1,5 +1,7 @@
 # Weather App
-weather app created with React.js.
+weather app created with TypeScript and React.js.
+Originally it was a simple JavaScript code but integrated with TypeScript.
+
 
 preview: https://yuchan-weather-app.netlify.app/
 
